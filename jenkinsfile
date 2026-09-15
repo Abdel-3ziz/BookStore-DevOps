@@ -21,5 +21,10 @@ pipeline {
                 
             }
         }
+        stage('Build Frontend') {
+            steps {
+                sh 'docker build -t abdel3ziz/bookstore-frontend:ci ./frontend'
+            }
+        }
     }
 }
