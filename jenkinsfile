@@ -15,9 +15,9 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Backend') {
             steps {
-                echo 'Building BookStore...'
+                sh 'docker build -t bookstore-backend:ci ./backend'
             }
         }
     }
