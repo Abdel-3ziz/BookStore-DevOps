@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: bookstore-statefulset
+  namespace: bookstore
+
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+
+  serviceName: "postgres"
+
+  replicas: 1
+
+  minReadySeconds: 10
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      terminationGracePeriodSeconds: 10
+
+      containers:
+        - name: postgres
+          image: postgres:16
+
+          ports:
+            - containerPort: 5432
+              name: postgres
+
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: bookstore-config
+                  key: DB_NAME
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bookstore-secret
+                  key: DB_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bookstore-secret
+                  key: DB_PASSWORD
+
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: bookstore-pvc
