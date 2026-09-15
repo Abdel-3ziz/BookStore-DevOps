@@ -15,17 +15,18 @@ pipeline {
             }
         }
 
-        stage('Build backend') {
+        stage('Build Backend') {
             steps {
                 sh 'docker build -t abdel3ziz/bookstore-backend:ci ./backend'
-                
             }
         }
+
         stage('Build Frontend') {
             steps {
                 sh 'docker build -t abdel3ziz/bookstore-frontend:ci ./frontend'
             }
         }
+
         stage('Push Images') {
             steps {
                 withCredentials([usernamePassword(
@@ -42,6 +43,5 @@ pipeline {
                 }
             }
         }
-}
     }
 }
