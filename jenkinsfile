@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -9,21 +10,19 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-            }
-        }
-
         stage('Build Backend') {
             steps {
-                sh 'docker build -t abdel3ziz/bookstore-backend:1.0 ./backend'
+                sh '''
+                    docker build -t abdel3ziz/bookstore-backend:1.0 ./backend
+                '''
             }
         }
 
         stage('Build Frontend') {
             steps {
-                sh 'docker build -t abdel3ziz/bookstore-frontend:1.0 ./frontend'
+                sh '''
+                    docker build -t abdel3ziz/bookstore-frontend:1.0 ./frontend
+                '''
             }
         }
 
@@ -36,8 +35,10 @@ pipeline {
                 )]) {
                     sh '''
                         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
                         docker push abdel3ziz/bookstore-backend:1.0
                         docker push abdel3ziz/bookstore-frontend:1.0
+
                         docker logout
                     '''
                 }
@@ -50,8 +51,11 @@ pipeline {
                     credentialsId: 'k8s-jenkins-token',
                     variable: 'K8S_TOKEN'
                 )]) {
+
                     sh '''
                         set -e
+
+                        echo "Configuring Kubernetes..."
 
                         kubectl config set-cluster docker-desktop \
                             --server=https://host.docker.internal:61224 \
@@ -70,6 +74,20 @@ pipeline {
                         echo "Checking Kubernetes permissions..."
                         kubectl auth can-i get pods -n bookstore
 
+                        echo "Creating Kubernetes Secret..."
+
+                        cat > k8s/config/secret.yml <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bookstore-secret
+  namespace: bookstore
+type: Opaque
+data:
+  DB_PASSWORD: Ym9va3N0b3JlX3Bhc3M=
+  DB_USER: Ym9va3N0b3JlX3VzZXI=
+EOF
+
                         echo "Deploying application..."
 
                         kubectl apply -f k8s/config/configmap.yml
@@ -82,10 +100,15 @@ pipeline {
                         kubectl apply -f k8s/frontend/deployment.yml
                         kubectl apply -f k8s/frontend/service.yml
                         kubectl apply -f k8s/ingress/ingress.yml
+
+                        echo "Deployment completed successfully!"
+
+                        kubectl get pods -n bookstore
+                        kubectl get services -n bookstore
                     '''
                 }
             }
         }
-
     }
 }
+```
