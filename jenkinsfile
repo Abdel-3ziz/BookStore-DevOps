@@ -62,11 +62,15 @@ pipeline {
 
                         kubectl config set-context jenkins-deployer-context \
                             --cluster=docker-desktop \
-                            --user=jenkins-deployer
+                            --user=jenkins-deployer \
+                            --namespace=bookstore
 
                         kubectl config use-context jenkins-deployer-context
 
-                        kubectl get namespace bookstore
+                        echo "Checking Kubernetes permissions..."
+                        kubectl auth can-i get pods -n bookstore
+
+                        echo "Deploying application..."
 
                         kubectl apply -f k8s/config/configmap.yml
                         kubectl apply -f k8s/config/secret.yml
