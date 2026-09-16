@@ -46,22 +46,42 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                    kubectl apply -f k8s/namespace/namespace.yml
-                    kubectl apply -f k8s/config/configmap.yml
-                    kubectl apply -f k8s/config/secret.yml
-                    kubectl apply -f k8s/database/pvc.yml
-                    kubectl apply -f k8s/database/service.yml
-                    kubectl apply -f k8s/database/statefulset.yml
-                    kubectl apply -f k8s/backend/deployment.yml
-                    kubectl apply -f k8s/backend/service.yml
-                    kubectl apply -f k8s/frontend/deployment.yml
-                    kubectl apply -f k8s/frontend/service.yml
-                    kubectl apply -f k8s/ingress/ingress.yml
-                    kubectl apply -f k8s/rbac/role.yml
-                    kubectl apply -f k8s/rbac/rolebinding.yml
-                '''
+                withCredentials([string(
+                    credentialsId: 'k8s-jenkins-token',
+                    variable: 'K8S_TOKEN'
+                )]) {
+                    sh '''
+                        set -e
+
+                        kubectl config set-cluster docker-desktop \
+                            --server=https://host.docker.internal:61224 \
+                            --insecure-skip-tls-verify=true
+
+                        kubectl config set-credentials jenkins-deployer \
+                            --token="$K8S_TOKEN"
+
+                        kubectl config set-context jenkins-deployer-context \
+                            --cluster=docker-desktop \
+                            --user=jenkins-deployer
+
+                        kubectl config use-context jenkins-deployer-context
+
+                        kubectl get namespace bookstore
+
+                        kubectl apply -f k8s/config/configmap.yml
+                        kubectl apply -f k8s/config/secret.yml
+                        kubectl apply -f k8s/database/pvc.yml
+                        kubectl apply -f k8s/database/service.yml
+                        kubectl apply -f k8s/database/statefulset.yml
+                        kubectl apply -f k8s/backend/deployment.yml
+                        kubectl apply -f k8s/backend/service.yml
+                        kubectl apply -f k8s/frontend/deployment.yml
+                        kubectl apply -f k8s/frontend/service.yml
+                        kubectl apply -f k8s/ingress/ingress.yml
+                    '''
+                }
             }
         }
+
     }
 }
