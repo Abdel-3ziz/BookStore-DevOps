@@ -42,19 +42,26 @@ pipeline {
                     '''
                 }
             }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
-                    sh '''
-                        kubectl apply -f k8s/namespace/namespace.yml
-                        kubectl apply -R -f k8s/backend
-                        kubectl apply -R -f k8s/config
-                        kubectl apply -R -f k8s/database
-                        kubectl apply -R -f k8s/frontend
-                        kubectl apply -R -f k8s/ingress
-                        kubectl apply -R -f k8s/rbac
-                        '''
-    }
-}
+                sh '''
+                    kubectl apply -f k8s/namespace/namespace.yml
+                    kubectl apply -f k8s/config/configmap.yml
+                    kubectl apply -f k8s/config/secret.yml
+                    kubectl apply -f k8s/database/pvc.yml
+                    kubectl apply -f k8s/database/service.yml
+                    kubectl apply -f k8s/database/statefulset.yml
+                    kubectl apply -f k8s/backend/deployment.yml
+                    kubectl apply -f k8s/backend/service.yml
+                    kubectl apply -f k8s/frontend/deployment.yml
+                    kubectl apply -f k8s/frontend/service.yml
+                    kubectl apply -f k8s/ingress/ingress.yml
+                    kubectl apply -f k8s/rbac/role.yml
+                    kubectl apply -f k8s/rbac/rolebinding.yml
+                '''
+            }
         }
     }
 }
