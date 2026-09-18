@@ -1,0 +1,428 @@
+Started by user zizo
+Obtained jenkinsfile from git https://github.com/Abdel-3ziz/BookStore-DevOps.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/BookStore-CI
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/BookStore-CI/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Abdel-3ziz/BookStore-DevOps.git # timeout=10
+Fetching upstream changes from https://github.com/Abdel-3ziz/BookStore-DevOps.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/Abdel-3ziz/BookStore-DevOps.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 0a2d7bc89b568dbf17ba92272f54a067d6f2eb32 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 0a2d7bc89b568dbf17ba92272f54a067d6f2eb32 # timeout=10
+Commit message: "Fix Kubernetes secret deployment"
+ > git rev-list --no-walk 4c55bc7d131571b54e63ba5497c87c946cbbef11 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/BookStore-CI/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Abdel-3ziz/BookStore-DevOps.git # timeout=10
+Fetching upstream changes from https://github.com/Abdel-3ziz/BookStore-DevOps.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/Abdel-3ziz/BookStore-DevOps.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 0a2d7bc89b568dbf17ba92272f54a067d6f2eb32 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 0a2d7bc89b568dbf17ba92272f54a067d6f2eb32 # timeout=10
+Commit message: "Fix Kubernetes secret deployment"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Backend)
+[Pipeline] sh
++ docker build -t abdel3ziz/bookstore-backend:1.0 ./backend
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 174B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 1.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 63B done
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#5 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#5 DONE 0.0s
+
+#6 [2/5] WORKDIR /app
+#6 CACHED
+
+#7 [3/5] COPY package.json .
+#7 CACHED
+
+#8 [4/5] RUN npm install --omit=dev
+#8 CACHED
+
+#9 [5/5] COPY server.js .
+#9 CACHED
+
+#10 exporting to image
+#10 exporting layers done
+#10 exporting manifest sha256:d6a278e2ec74b1ac15e45d3061b0c6268264fd2e30fadb1809807f79b126fd8d done
+#10 exporting config sha256:f7848ecfe5b234230b337e8232dc9684eab236cda9d4bf412b142b14b33cd944 done
+#10 exporting attestation manifest sha256:9961f1ffd978260969fcedbaffd57fd29c207620cf3a1fb5d7759460028b088b
+#10 exporting attestation manifest sha256:9961f1ffd978260969fcedbaffd57fd29c207620cf3a1fb5d7759460028b088b 0.1s done
+#10 exporting manifest list sha256:3214ef8c7aa72ca8f19eb8a31c611d648207d223554943f0305f5b360d72945a 0.0s done
+#10 naming to docker.io/abdel3ziz/bookstore-backend:1.0
+#10 naming to docker.io/abdel3ziz/bookstore-backend:1.0 done
+#10 unpacking to docker.io/abdel3ziz/bookstore-backend:1.0 0.0s done
+#10 DONE 0.2s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Frontend)
+[Pipeline] sh
++ docker build -t abdel3ziz/bookstore-frontend:1.0 ./frontend
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 128B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 0.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 31B done
+#4 DONE 0.0s
+
+#5 [1/3] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#5 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#5 DONE 0.0s
+
+#6 [2/3] WORKDIR /app
+#6 CACHED
+
+#7 [3/3] COPY server.js .
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 exporting manifest sha256:ca37e4a38ae319217f40a6f2ca9bfef657aef6c5bc9f820acb0e55b5aa43a8d4 done
+#8 exporting config sha256:b3aa8b0bd9d5f0feaab7d684c08f2965712254a7fadd5177f081b0b565a3cd58 done
+#8 exporting attestation manifest sha256:5298c7146512a2208cfedff9fc521f4572311682e5b00059809f1ae92ab5291e
+#8 exporting attestation manifest sha256:5298c7146512a2208cfedff9fc521f4572311682e5b00059809f1ae92ab5291e 0.1s done
+#8 exporting manifest list sha256:7b0742ebeec08f37f7708cf636a5409eedfc8cf918a24a43968e3ec28b31b899 0.0s done
+#8 naming to docker.io/abdel3ziz/bookstore-frontend:1.0 done
+#8 unpacking to docker.io/abdel3ziz/bookstore-frontend:1.0
+#8 unpacking to docker.io/abdel3ziz/bookstore-frontend:1.0 0.0s done
+#8 DONE 0.2s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Images)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASSWORD
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u abdel3ziz --password-stdin
+
+WARNING! Your credentials are stored unencrypted in '/var/jenkins_home/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
++ docker push abdel3ziz/bookstore-backend:1.0
+The push refers to repository [docker.io/abdel3ziz/bookstore-backend]
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Waiting
+b2cbbfe903b0: Waiting
+4feea04c1543: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+4feea04c1543: Layer already exists
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+590e8763605c: Layer already exists
+b2cbbfe903b0: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+b2cbbfe903b0: Waiting
+84a42d85b069: Waiting
+6a0ac1617861: Waiting
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+1ebfa31e85e9: Waiting
+b6ff0b8aa2f4: Waiting
+b2cbbfe903b0: Layer already exists
+84a42d85b069: Waiting
+6a0ac1617861: Layer already exists
+782f1db1f33d: Waiting
+fff4e2c1b189: Waiting
+84a42d85b069: Waiting
+782f1db1f33d: Layer already exists
+fff4e2c1b189: Layer already exists
+1ebfa31e85e9: Layer already exists
+b6ff0b8aa2f4: Layer already exists
+84a42d85b069: Waiting
+84a42d85b069: Waiting
+84a42d85b069: Waiting
+84a42d85b069: Pushed
+1.0: digest: sha256:3214ef8c7aa72ca8f19eb8a31c611d648207d223554943f0305f5b360d72945a size: 856
++ docker push abdel3ziz/bookstore-frontend:1.0
+The push refers to repository [docker.io/abdel3ziz/bookstore-frontend]
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Waiting
+4feea04c1543: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+6cf6d2147496: Layer already exists
+4feea04c1543: Layer already exists
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Waiting
+6a0ac1617861: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+b2cbbfe903b0: Layer already exists
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+590e8763605c: Waiting
+fff4e2c1b189: Waiting
+6a0ac1617861: Waiting
+4428cf526807: Waiting
+590e8763605c: Layer already exists
+fff4e2c1b189: Layer already exists
+6a0ac1617861: Layer already exists
+4428cf526807: Waiting
+4428cf526807: Waiting
+4428cf526807: Pushed
+1.0: digest: sha256:7b0742ebeec08f37f7708cf636a5409eedfc8cf918a24a43968e3ec28b31b899 size: 856
++ docker logout
+Removing login credentials for https://index.docker.io/v1/
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to Kubernetes)
+[Pipeline] withCredentials
+Masking supported pattern matches of $K8S_TOKEN
+[Pipeline] {
+[Pipeline] sh
++ set -e
++ echo Configuring Kubernetes...
+Configuring Kubernetes...
++ kubectl config set-cluster docker-desktop --server=https://host.docker.internal:61224 --insecure-skip-tls-verify=true
+Cluster "docker-desktop" set.
++ kubectl config set-credentials jenkins-deployer --token=****
+User "jenkins-deployer" set.
++ kubectl config set-context jenkins-deployer-context --cluster=docker-desktop --user=jenkins-deployer --namespace=bookstore
+Context "jenkins-deployer-context" modified.
++ kubectl config use-context jenkins-deployer-context
+Switched to context "jenkins-deployer-context".
++ echo Checking Kubernetes permissions...
+Checking Kubernetes permissions...
++ kubectl auth can-i get pods -n bookstore
+yes
++ echo Creating Kubernetes Secret...
+Creating Kubernetes Secret...
++ cat
++ echo Deploying application...
+Deploying application...
++ kubectl apply -f k8s/config/configmap.yml
+configmap/bookstore-config unchanged
++ kubectl apply -f k8s/config/secret.yml
+secret/bookstore-secret configured
++ kubectl apply -f k8s/database/pvc.yml
+persistentvolumeclaim/bookstore-pvc unchanged
++ kubectl apply -f k8s/database/service.yml
+service/postgres unchanged
++ kubectl apply -f k8s/database/statefulset.yml
+statefulset.apps/bookstore-statefulset unchanged
++ kubectl apply -f k8s/backend/deployment.yml
+deployment.apps/backend-deployment unchanged
++ kubectl apply -f k8s/backend/service.yml
+service/backend-service unchanged
++ kubectl apply -f k8s/frontend/deployment.yml
+deployment.apps/frontend-deployment unchanged
++ kubectl apply -f k8s/frontend/service.yml
+service/frontend-service created
++ kubectl apply -f k8s/ingress/ingress.yml
+ingress.networking.k8s.io/bookstore-ingress unchanged
++ echo Deployment completed successfully!
+Deployment completed successfully!
++ kubectl get pods -n bookstore
+NAME                                   READY   STATUS    RESTARTS   AGE
+backend-deployment-7b97b8bfc8-2bsnn    1/1     Running   0          5h1m
+backend-deployment-7b97b8bfc8-j29zd    1/1     Running   0          5h1m
+bookstore-statefulset-0                1/1     Running   0          5h1m
+frontend-deployment-648d8dd499-rk7j2   1/1     Running   0          5h1m
+frontend-deployment-648d8dd499-xqb6r   1/1     Running   0          5h1m
++ kubectl get services -n bookstore
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+backend-service    ClusterIP   10.96.241.95    <none>        8080/TCP   5h1m
+frontend-service   ClusterIP   10.96.37.187    <none>        3000/TCP   1s
+postgres           ClusterIP   10.96.138.121   <none>        5432/TCP   5h2m
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
